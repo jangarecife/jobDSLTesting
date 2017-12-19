@@ -4,7 +4,7 @@ version '1.0-SNAPSHOT'
 apply plugin: 'groovy'
 
 def jobDslVersion = "1.64"
-def jenkinsVersion = "2.60.3"
+def jenkinsVersion = "2.60.2"
 
 sourceSets {
     jobs {
@@ -18,9 +18,13 @@ sourceSets {
 }
 
 repositories {
+    //flatDir {
+    //    dirs 'libs'
+    //}
+    mavenLocal()
     mavenCentral()
-    jcenter()
     maven { url 'http://repo.jenkins-ci.org/releases/' }
+    jcenter()
 }
 
 configurations {
@@ -35,9 +39,15 @@ dependencies {
     testCompile 'cglib:cglib-nodep:2.2.2' // used by Spock
 
     // Jenkins test harness dependencies
-    testCompile 'org.jenkins-ci.main:jenkins-test-harness:2.24'
+    // https://mvnrepository.com/artifact/org.netbeans.modules/org-netbeans-insane
+//    testCompile group: 'org.netbeans.modules', name: 'org-netbeans-insane', version: 'RELEASE72'
+    testCompile 'org.jenkins-ci.main:jenkins-test-harness:2.33-SNAPSHOT'
+//    testCompile('org.jenkins-ci.main:jenkins-test-harness:2.32') {
+//        exclude group: 'org.netbeans.modules', module: 'org-netbeans-insane'
+//    }
+
     testCompile "org.jenkins-ci.main:jenkins-war:${jenkinsVersion}"
-    testCompile "org.jenkins-ci.main:jenkins-war:${jenkinsVersion}:war-for-test@jar"
+ //   testCompile "org.jenkins-ci.main:jenkins-war:${jenkinsVersion}:war-for-test@jar"
 
     // Job DSL plugin including plugin dependencies
     testCompile "org.jenkins-ci.plugins:job-dsl:${jobDslVersion}"
